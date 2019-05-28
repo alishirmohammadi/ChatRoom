@@ -1,0 +1,31 @@
+* {
+    -fx-font-family: Tahoma;
+}
+
+.chatList {
+    -fx-font-size: 20px;
+}
+
+.list-view .list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.list-view, .list-view:selected {
+    -fx-border-width: 2;
+    -fx-border-color: lightgray;
+}
+
+Label.chatIcon {
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+    -fx-background-radius: 25px;
+    -fx-alignment: center;
+    -fx-font-size: 24px;
+    -fx-text-fill: white
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: rgb(65, 159, 217);
+    -fx-text-fill: white;
+}
