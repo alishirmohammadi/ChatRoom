@@ -6,12 +6,12 @@
     -fx-font-size: 20px;
 }
 
-.list-view .list-cell {
+.chatList.list-view .list-cell {
     -fx-background-color: white;
     -fx-text-fill: black;
 }
 
-.list-view, .list-view:selected {
+.chatList.list-view, .list-view:selected {
     -fx-border-width: 2;
     -fx-border-color: lightgray;
 }
@@ -25,7 +25,37 @@ Label.chatIcon {
     -fx-text-fill: white
 }
 
-.list-view .list-cell:selected {
+.chatList.list-view .list-cell:selected {
     -fx-background-color: rgb(65, 159, 217);
     -fx-text-fill: white;
+}
+
+.messages.list-view {
+    -fx-background-image: url(../images/background.jpg);
+}
+
+.messages.list-view .list-cell {
+    -fx-background-color: rgba(0, 0, 0, 0);
+}
+
+Label.messageLabel {
+    -fx-padding: 10px;
+    -fx-border-width: 1px;
+    -fx-border-color: lightgray;
+    -fx-border-style: solid;
+    -fx-background-color: #fff;
+    -fx-text-fill: black;
+    -fx-wrap-text: true;
+    -fx-text-alignment: right;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 2, 0, 2, 0);
+}
+
+Label.messageLabel.messageRight {
+    -fx-border-radius: 15px 15px 0px 15px;
+    -fx-background-radius: 15px 15px 0px 15px;
+}
+
+Label.messageLabel.messageLeft {
+    -fx-border-radius: 15px 15px 15px 0px;
+    -fx-background-radius: 15px 15px 15px 0px;
 }
