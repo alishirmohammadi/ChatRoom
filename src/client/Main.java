@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public class Main extends Application {
     private static Stage stage;
+    private static ServerConnection connection;
     public static User user = new User("Ali", 1);
 
     @Override
@@ -20,8 +21,10 @@ public class Main extends Application {
         stage = primaryStage;
         user = createUser();
         if(user.getName().equals("")) return;
-        ServerConnection.connectServer();
-        ServerConnection.sendUser(user);
+        connection = new ServerConnection();
+        connection.connectServer();
+        connection.sendUser(user);
+        connection.start();
         showChat();
     }
 

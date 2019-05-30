@@ -1,7 +1,8 @@
 package server;
 
 public enum Commands {
-    CREATE_USER("Create User");
+    CREATE_USER("Create User"),
+    ADD_CHATS("Add Chats");
 
     String command;
 

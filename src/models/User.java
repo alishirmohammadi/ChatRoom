@@ -1,15 +1,18 @@
 package models;
 
 import com.google.gson.Gson;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import models.chat.Chat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class User {
     private int id;
     private String username;
-    private List<Chat> chats;
+    private List<Chat> chats = new ArrayList<>();
 
     public User(String username, int id) {
         this.username = username;
@@ -36,5 +39,13 @@ public class User {
 
     public String getName() {
         return username;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<Chat> getChats() {
+        return chats;
     }
 }
