@@ -8,7 +8,7 @@ import javafx.scene.control.ListView;
 import models.User;
 import models.message.Message;
 import models.message.TextMessage;
-import sample.Main;
+import client.Main;
 
 public class ChatController {
     public static ChatController instance;
@@ -66,7 +66,7 @@ public class ChatController {
                     if(messageLabel.getText().length() > 30) {
                         messageLabel.setMaxWidth(400);
                         messageLabel.setWrapText(true);
-                        messageLabel.setText(messageLabel.getText() + "\nsalam");
+                        messageLabel.setText(messageLabel.getText() + "                                                                          ");
                     }
                     setGraphic(messageLabel);
                     if(message.getUser().equals(Main.user)) {
