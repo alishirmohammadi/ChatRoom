@@ -4,15 +4,19 @@ import com.gilecode.yagson.YaGson;
 import models.chat.Chat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class User {
     private int id;
     private String username;
     private List<Chat> chats = new ArrayList<>();
+    private String color;
+    private static final String[] COLORS = new String[] {"coral", "darkcyan", "green", "darkgreen", "crimson", "Salmon", "DarkSalmon", "LightCoral", "IndianRed", "Tomato", "DarkKhaki", "BlueViolet", "DarkViolet", "DarkMagenta", "DarkSlateBlue", "Indigo", "CadetBlue", "DarkOliveGreen", "SaddleBrown", "RosyBrown", "MediumSeaGreen"};
 
     public User(String username, int id) {
         this.username = username;
         this.id = id;
+        this.color = COLORS[new Random().nextInt(COLORS.length)];
     }
 
     @Override
@@ -38,5 +42,9 @@ public class User {
 
     public List<Chat> getChats() {
         return chats;
+    }
+
+    public String getColor() {
+        return color;
     }
 }

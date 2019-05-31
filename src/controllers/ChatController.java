@@ -33,7 +33,7 @@ public class ChatController {
                     setText(chat.getTitle());
                     setGraphicTextGap(10);
                     Label label = new Label(("" + chat.getTitle().charAt(0)).toUpperCase());
-                    label.setStyle("-fx-background-color: coral;");
+                    label.setStyle("-fx-background-color: " + chat.getColor() + ";");
                     label.getStyleClass().add("chatIcon");
                     setGraphic(label);
                 }

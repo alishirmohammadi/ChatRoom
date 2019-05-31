@@ -14,6 +14,10 @@ public class Chat {
         return null;
     }
 
+    public String getColor() {
+        return "";
+    }
+
     protected Chat(boolean isPrivateChat) {
         this.isPrivateChat = isPrivateChat;
     }

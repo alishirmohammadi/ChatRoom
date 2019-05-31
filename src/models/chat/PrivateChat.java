@@ -11,6 +11,11 @@ public class PrivateChat extends Chat {
     }
 
     @Override
+    public String getColor() {
+        return user.getColor();
+    }
+
+    @Override
     public String getTitle() {
         return user.getName();
     }
