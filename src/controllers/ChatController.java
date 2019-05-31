@@ -1,29 +1,46 @@
 package controllers;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import models.chat.Chat;
 import models.message.Message;
 import models.message.TextMessage;
 import client.Main;
 
+import java.util.Iterator;
+
 public class ChatController {
     public static ChatController instance;
-    { instance = this; }
-
+    public TextField messageInput;
     public ListView chats;
     public ListView listView;
+
+    { instance = this; }
 
     public void updateChats() {
         chats.getItems().clear();
         Main.user.getChats().forEach(chat -> chats.getItems().add(chat));
     }
 
+    public void updateMessages() {
+        listView.getItems().removeAll(listView.getItems());
+        listView.getSelectionModel().clearSelection();
+
+        Chat selectedChat = (Chat) chats.getSelectionModel().getSelectedItem();
+        if(selectedChat == null) return;
+        listView.getItems().addAll(selectedChat.getMessages());
+        System.out.println(selectedChat.getMessages().size() + " " + listView.getItems().size());
+    }
+
+
     public void initialize() {
+        messageInput.setDisable(true);
+
         updateChats();
         chats.setCellFactory(param -> new ListCell<Chat>() {
             @Override
@@ -36,6 +53,9 @@ public class ChatController {
                     label.setStyle("-fx-background-color: " + chat.getColor() + ";");
                     label.getStyleClass().add("chatIcon");
                     setGraphic(label);
+                } else {
+                    setText("");
+                    setGraphic(new Label(""));
                 }
             }
         });
@@ -46,7 +66,11 @@ public class ChatController {
             public void updateItem(Message message, boolean empty) {
                 super.updateItem(message, empty);
                 setRotate(180);
-                if(empty) return;
+                if(empty) {
+                    setText("");
+                    setGraphic(new Label(""));
+                    return;
+                }
                 if(message instanceof TextMessage) {
                     Label messageLabel = new Label(((TextMessage) message).getText());
                     messageLabel.getStyleClass().add("messageLabel");
@@ -70,6 +94,21 @@ public class ChatController {
     }
 
     public void sendMessage(ActionEvent actionEvent) {
+        String text = messageInput.getText().trim();
+        if(text.equals(""))
+            return;
+        Chat selectedChat = (Chat) chats.getSelectionModel().getSelectedItem();
+        int chatId = selectedChat.getId();
+        messageInput.setText("");
+        Message message = new TextMessage(Main.user, chatId, -1, text);
+        if(Main.connection.sendMessage(message)) {
+            selectedChat.getMessages().add(0, message);
+            updateMessages();
+        }
+    }
 
+    public void chatChange(MouseEvent mouseEvent) {
+        messageInput.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        updateMessages();
     }
 }

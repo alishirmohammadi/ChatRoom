@@ -53,8 +53,14 @@ public class Connection extends Thread {
     public void addDefaultChats() {
         List<Chat> chats = new ArrayList<>();
         Server.connections.forEach((oldUser, connection) -> {
-            chats.add(new PrivateChat(oldUser));
-            connection.addChats(Collections.singletonList(new PrivateChat(this.user)));
+            PrivateChat newUserChat = new PrivateChat(oldUser);
+            PrivateChat oldUserChat = new PrivateChat(this.user);
+            newUserChat.setId(Server.chats.size());
+            Server.chats.put(newUserChat.getId(), newUserChat);
+            oldUserChat.setId(Server.chats.size());
+            Server.chats.put(oldUserChat.getId(), oldUserChat);
+            chats.add(newUserChat);
+            connection.addChats(Collections.singletonList(oldUserChat));
         });
         addChats(chats);
     }

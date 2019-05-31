@@ -33,4 +33,8 @@ public class Chat {
     public boolean isPrivateChat() {
         return isPrivateChat;
     }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
 }

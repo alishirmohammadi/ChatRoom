@@ -6,8 +6,8 @@ import models.User;
 public class TextMessage extends Message {
     private String text;
 
-    public TextMessage(int id, User user, Message replyMessage, String text) {
-        super(id, user, replyMessage);
+    public TextMessage(User user, int chatId, int replyMessageId, String text) {
+        super(user, chatId, replyMessageId);
         this.text = text;
     }
 

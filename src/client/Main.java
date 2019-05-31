@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class Main extends Application {
     private static Stage stage;
-    private static ServerConnection connection;
+    public static ServerConnection connection;
     public static User user = new User("Ali", 1);
 
     @Override

@@ -5,6 +5,7 @@ import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import controllers.ChatController;
 import models.User;
 import models.chat.PrivateChat;
+import models.message.Message;
 import server.Commands;
 import java.io.*;
 import java.lang.reflect.Type;
@@ -39,6 +40,7 @@ public class ServerConnection extends Thread {
                 String command = scanner.nextLine();
                 if(command.equals(Commands.ADD_CHATS.toString())) {
                     String chatsJson = scanner.nextLine();
+                    System.out.println("new chats added: " + chatsJson);
                     Type chatsType = new TypeToken<ArrayList<PrivateChat>>() {}.getType();
                     List<PrivateChat> chats = yaGson.fromJson(chatsJson, chatsType);
                     Main.user.getChats().addAll(chats);
@@ -53,5 +55,12 @@ public class ServerConnection extends Thread {
         out.println(Commands.CREATE_USER);
         out.println(user.toString());
         out.flush();
+    }
+
+    public boolean sendMessage(Message message) {
+        out.println(Commands.SEND_MESSAGE);
+        out.println(message.toString());
+        out.flush();
+        return true;
     }
 }
