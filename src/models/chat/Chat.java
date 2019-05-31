@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Chat {
     private List<Message> messages = new ArrayList<>();
+    private int id;
     private boolean isPrivateChat;
 
     public String getTitle() {
@@ -15,6 +16,14 @@ public class Chat {
 
     protected Chat(boolean isPrivateChat) {
         this.isPrivateChat = isPrivateChat;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isPrivateChat() {

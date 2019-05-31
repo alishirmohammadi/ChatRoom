@@ -1,13 +1,9 @@
 package models;
 
-import com.google.gson.Gson;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
+import com.gilecode.yagson.YaGson;
 import models.chat.Chat;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class User {
     private int id;
@@ -28,13 +24,8 @@ public class User {
                 username.equals(user.username);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username);
-    }
-
     @Override public String toString() {
-        return new Gson().toJson(this);
+        return new YaGson().toJson(this);
     }
 
     public String getName() {

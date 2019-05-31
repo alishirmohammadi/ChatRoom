@@ -1,6 +1,6 @@
 package models.message;
 
-import com.google.gson.Gson;
+import com.gilecode.yagson.YaGson;
 import models.User;
 
 public class ImojiMessage extends Message {
@@ -9,7 +9,7 @@ public class ImojiMessage extends Message {
     }
 
     @Override public String toString() {
-        return new Gson().toJson(this);
+        return new YaGson().toJson(this);
     }
 
 }

@@ -1,6 +1,8 @@
 package server;
 
 import models.User;
+import models.chat.Chat;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +11,7 @@ import java.util.Map;
 
 public class Server {
     public static Map<User, Connection> connections = new HashMap<>();
+    public static Map<Integer, Chat> chats = new HashMap<>();
     public static final int PORT = 8232;
 
     public static void main(String[] args) throws IOException {
