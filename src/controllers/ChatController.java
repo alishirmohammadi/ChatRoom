@@ -28,13 +28,12 @@ public class ChatController {
     }
 
     public void updateMessages() {
-        listView.getItems().removeAll(listView.getItems());
+        listView.getItems().clear();
         listView.getSelectionModel().clearSelection();
 
         Chat selectedChat = (Chat) chats.getSelectionModel().getSelectedItem();
         if(selectedChat == null) return;
         listView.getItems().addAll(selectedChat.getMessages());
-        System.out.println(selectedChat.getMessages().size() + " " + listView.getItems().size());
     }
 
 
@@ -66,27 +65,27 @@ public class ChatController {
             public void updateItem(Message message, boolean empty) {
                 super.updateItem(message, empty);
                 setRotate(180);
-                if(empty) {
+                if (!empty) {
+                    if (message instanceof TextMessage) {
+                        Label messageLabel = new Label(((TextMessage) message).getText());
+                        messageLabel.getStyleClass().add("messageLabel");
+                        if (messageLabel.getText().length() > 30) {
+                            messageLabel.setMaxWidth(400);
+                            messageLabel.setWrapText(true);
+                            messageLabel.setText(messageLabel.getText() + "                                                                          ");
+                        }
+                        setGraphic(messageLabel);
+                        if (message.getUser().equals(Main.user)) {
+                            messageLabel.getStyleClass().add("messageRight");
+                            setAlignment(Pos.CENTER_RIGHT);
+                        } else {
+                            messageLabel.getStyleClass().add("messageLeft");
+                            setAlignment(Pos.CENTER_LEFT);
+                        }
+                    }
+                } else {
                     setText("");
                     setGraphic(new Label(""));
-                    return;
-                }
-                if(message instanceof TextMessage) {
-                    Label messageLabel = new Label(((TextMessage) message).getText());
-                    messageLabel.getStyleClass().add("messageLabel");
-                    if(messageLabel.getText().length() > 30) {
-                        messageLabel.setMaxWidth(400);
-                        messageLabel.setWrapText(true);
-                        messageLabel.setText(messageLabel.getText() + "                                                                          ");
-                    }
-                    setGraphic(messageLabel);
-                    if(message.getUser().equals(Main.user)) {
-                        messageLabel.getStyleClass().add("messageRight");
-                        setAlignment(Pos.CENTER_RIGHT);
-                    } else {
-                        messageLabel.getStyleClass().add("messageLeft");
-                        setAlignment(Pos.CENTER_LEFT);
-                    }
                 }
             }
         });
@@ -103,8 +102,14 @@ public class ChatController {
         Message message = new TextMessage(Main.user, chatId, -1, text);
         if(Main.connection.sendMessage(message)) {
             selectedChat.getMessages().add(0, message);
-            updateMessages();
+            listView.getItems().add(0, message);
         }
+    }
+
+    public void showMessage(Message message, Chat chat) {
+        Chat selectedChat = (Chat) chats.getSelectionModel().getSelectedItem();
+        if(chat == selectedChat)
+            listView.getItems().add(0, message);
     }
 
     public void chatChange(MouseEvent mouseEvent) {

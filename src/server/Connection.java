@@ -3,11 +3,12 @@ package server;
 import com.gilecode.yagson.YaGson;
 import models.User;
 import models.chat.Chat;
+import models.chat.Group;
 import models.chat.PrivateChat;
+import models.message.Message;
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Connection extends Thread {
     private static YaGson yaGson = new YaGson();
@@ -15,6 +16,7 @@ public class Connection extends Thread {
     private Scanner scanner;
     private PrintWriter out;
     private User user;
+
 
     public Connection(Socket clientSocket) throws IOException {
         this.socket = clientSocket;
@@ -38,9 +40,41 @@ public class Connection extends Thread {
                     addDefaultChats();
                     Server.connections.put(user, this);
                     System.out.format("User '%s' connected.\n", user.getName());
+                } else if(command.equals(Commands.SEND_MESSAGE.toString())) {
+                    String messageJson = scanner.nextLine();
+                    Message message = yaGson.fromJson(messageJson, Message.class);
+                    Chat chat = Server.chats.get(message.getChatId());
+                    chat.getMessages().add(0, message);
+                    if(user.getChats().contains(chat)) {
+                        out.println("true");
+                        out.flush();
+                        if(chat instanceof PrivateChat) {
+                            User receiver = ((PrivateChat) chat).getUser();
+                            Chat receiverChat = receiver.getChats().stream().filter(
+                                    chat1 -> chat1 instanceof PrivateChat
+                            ).filter(
+                                    chat1 -> ((PrivateChat) chat1).getUser().equals(user)
+                            ).findFirst().get();
+                            message.setChatId(receiverChat.getId());
+                            receiverChat.getMessages().add(0, message);
+                            Connection receiverConnection = Server.connections.get(receiver);
+                            receiverConnection.sendMessage(message);
+                        } else if (chat instanceof Group) {
+                            // TODO: implement
+                        }
+                    } else {
+                        out.println("false");
+                        out.flush();
+                    }
                 }
             }
         }
+    }
+
+    public void sendMessage(Message message) {
+        out.println(Commands.RECEIVE_MESSAGE);
+        out.println(message.toString());
+        out.flush();
     }
 
     public void addChats(List<Chat> chats) {

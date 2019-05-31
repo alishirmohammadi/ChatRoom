@@ -38,4 +38,8 @@ public abstract class Message {
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setChatId(int chatId) {
+        this.chatId = chatId;
+    }
 }

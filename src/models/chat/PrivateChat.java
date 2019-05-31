@@ -19,4 +19,8 @@ public class PrivateChat extends Chat {
     public String getTitle() {
         return user.getName();
     }
+
+    public User getUser() {
+        return user;
+    }
 }

@@ -4,15 +4,15 @@ import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import controllers.ChatController;
 import models.User;
+import models.chat.Chat;
 import models.chat.PrivateChat;
 import models.message.Message;
 import server.Commands;
+
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ServerConnection extends Thread {
     private static YaGson yaGson = new YaGson();
@@ -46,6 +46,15 @@ public class ServerConnection extends Thread {
                     Main.user.getChats().addAll(chats);
                     if(ChatController.instance != null)
                         ChatController.instance.updateChats();
+                } else if(command.equals(Commands.RECEIVE_MESSAGE.toString())) {
+                    String messageJson = scanner.nextLine();
+                    Message message = yaGson.fromJson(messageJson, Message.class);
+                    Chat messageChat = null;
+                    for(Chat chat : Main.user.getChats())
+                        if(chat.getId() == message.getChatId())
+                            messageChat = chat;
+                    messageChat.getMessages().add(0, message);
+                    ChatController.instance.showMessage(message, messageChat);
                 }
             }
         }

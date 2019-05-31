@@ -2,14 +2,13 @@ package models;
 
 import com.gilecode.yagson.YaGson;
 import models.chat.Chat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 
 public class User {
     private int id;
     private String username;
-    private List<Chat> chats = new ArrayList<>();
+    private Set<Chat> chats = new HashSet<>();
     private String color;
     private static final String[] COLORS = new String[] {"coral", "darkcyan", "green", "darkgreen", "crimson", "Salmon", "DarkSalmon", "LightCoral", "IndianRed", "Tomato", "DarkKhaki", "BlueViolet", "DarkViolet", "DarkMagenta", "DarkSlateBlue", "Indigo", "CadetBlue", "DarkOliveGreen", "SaddleBrown", "RosyBrown", "MediumSeaGreen"};
 
@@ -40,7 +39,7 @@ public class User {
         this.id = id;
     }
 
-    public List<Chat> getChats() {
+    public Set<Chat> getChats() {
         return chats;
     }
 
