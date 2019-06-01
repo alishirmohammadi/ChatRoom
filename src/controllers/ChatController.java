@@ -8,11 +8,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import models.chat.Chat;
+import models.chat.PrivateChat;
 import models.message.Message;
 import models.message.TextMessage;
 import client.Main;
-
-import java.util.Iterator;
 
 public class ChatController {
     public static ChatController instance;
@@ -46,10 +45,17 @@ public class ChatController {
             public void updateItem(Chat chat, boolean empty) {
                 super.updateItem(chat, empty);
                 if(!empty) {
+                    boolean hasProgileImage = chat instanceof PrivateChat && !((PrivateChat) chat).getUser().getProfileImage().equals("");
                     setText(chat.getTitle());
                     setGraphicTextGap(10);
-                    Label label = new Label(("" + chat.getTitle().charAt(0)).toUpperCase());
-                    label.setStyle("-fx-background-color: " + chat.getColor() + ";");
+                    Label label = new Label("");
+                    if(!hasProgileImage) {
+                        label.setStyle("-fx-background-color: " + chat.getColor() + ";");
+                        label.setText(("" + chat.getTitle().charAt(0)).toUpperCase());
+                    } else
+                        label.setStyle("-fx-background-image: url(http://localhost:8231/" + ((PrivateChat) chat).getUser().getProfileImage() + ");" +
+                                "-fx-background-size: 50px 50px; " +
+                                "-fx-background-radius: 25px; ");
                     label.getStyleClass().add("chatIcon");
                     setGraphic(label);
                 } else {

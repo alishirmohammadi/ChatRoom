@@ -78,7 +78,7 @@ public class Connection extends Thread {
                 } else if (command.equals(Commands.SET_PROFILE.toString())) {
                     try {
                         String fileName = receiveImage();
-                        System.out.println(fileName);
+                        this.user.setProfileImage(fileName);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

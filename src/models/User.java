@@ -10,6 +10,8 @@ public class User {
     private String username;
     private Set<Chat> chats = new HashSet<>();
     private String color;
+    private String profileImage = "";
+
     private static final String[] COLORS = new String[] {"coral", "darkcyan", "green", "darkgreen", "crimson", "Salmon", "DarkSalmon", "LightCoral", "IndianRed", "Tomato", "DarkKhaki", "BlueViolet", "DarkViolet", "DarkMagenta", "DarkSlateBlue", "Indigo", "CadetBlue", "DarkOliveGreen", "SaddleBrown", "RosyBrown", "MediumSeaGreen"};
 
     public User(String username, int id) {
@@ -45,5 +47,13 @@ public class User {
 
     public String getColor() {
         return color;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

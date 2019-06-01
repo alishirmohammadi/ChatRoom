@@ -9,12 +9,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.User;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import java.util.Scanner;
 
 public class Main extends Application {
     private static Stage stage;
@@ -29,7 +25,9 @@ public class Main extends Application {
         connection = new ServerConnection();
         connection.connectServer();
         connection.sendUser(user);
-        connection.setProfile(addProfile());
+        File profileImage = addProfile();
+        if(profileImage != null)
+            connection.setProfile(profileImage);
         connection.start();
         showChat();
     }
@@ -50,7 +48,7 @@ public class Main extends Application {
         return new User(result.orElse(""), 0);
     }
 
-    public File addProfile() throws IOException {
+    public File addProfile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select your profile image...");
         fileChooser.getExtensionFilters().add(
