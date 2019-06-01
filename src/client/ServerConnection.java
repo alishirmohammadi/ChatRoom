@@ -63,6 +63,13 @@ public class ServerConnection extends Thread {
         }
     }
 
+    public void createGroup(String Name, String members) {
+        out.println(Commands.CREATE_GROUP);
+        out.println(Name);
+        out.println(members);
+        out.flush();
+    }
+
     public void sendUser(User user) {
         out.println(Commands.CREATE_USER);
         out.println(user.toString());

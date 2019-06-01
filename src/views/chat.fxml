@@ -5,9 +5,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <AnchorPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChatController" stylesheets="@styles/style.css">
-    <ListView fx:id="chats" editable="true" prefHeight="600" prefWidth="200" styleClass="chatList" onMouseClicked="#chatChange"/>
+    <ListView fx:id="chats" editable="true" prefHeight="540" layoutY="60" prefWidth="200" styleClass="chatList" onMouseClicked="#chatChange"/>
     <ListView fx:id="listView" editable="true" layoutX="200" prefHeight="540" prefWidth="600" styleClass="messages" />
     <TextField fx:id="messageInput" layoutX="260.0" layoutY="540.0" prefWidth="600" prefHeight="60" promptText="Type message and press Enter to send." style="-fx-font-size: 20;" onAction="#sendMessage"/>
+    <Label fx:id="name" prefWidth="200" prefHeight="60" alignment="center" text="Salam" style="-fx-background-color: white; -fx-font-size: 24; -fx-font-family: Tahoma;"/>
     <Button fx:id="imageButton" prefHeight="60" prefWidth="60" layoutX="200" layoutY="540" text="📎" style="-fx-font-size: 24;" onMouseClicked="#sendImage" disable="true"/>
+    <Button fx:id="createGroup" prefHeight="60" prefWidth="200" layoutY="600" text="Create group" style="-fx-font-size: 24;" onMouseClicked="#createGroup"/>
+    <Button fx:id="emoji1" prefHeight="60" prefWidth="60" layoutX="200" layoutY="600" text="😁" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji1"/>
+    <Button fx:id="emoji2" prefHeight="60" prefWidth="60" layoutX="260" layoutY="600" text="😂" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji2"/>
+    <Button fx:id="emoji3" prefHeight="60" prefWidth="60" layoutX="320" layoutY="600" text="😉" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji3"/>
+    <Button fx:id="emoji4" prefHeight="60" prefWidth="60" layoutX="380" layoutY="600" text="😍" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji4"/>
+    <Button fx:id="emoji5" prefHeight="60" prefWidth="60" layoutX="440" layoutY="600" text="😜" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji5"/>
+    <Button fx:id="emoji6" prefHeight="60" prefWidth="60" layoutX="500" layoutY="600" text="😐" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji6"/>
+    <Button fx:id="emoji7" prefHeight="60" prefWidth="60" layoutX="560" layoutY="600" text="😨" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji7"/>
+    <Button fx:id="emoji8" prefHeight="60" prefWidth="60" layoutX="620" layoutY="600" text="😡" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji8"/>
+    <Button fx:id="emoji9" prefHeight="60" prefWidth="60" layoutX="680" layoutY="600" text="💩" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji9"/>
+    <Button fx:id="emoji10" prefHeight="60" prefWidth="60" layoutX="740" layoutY="600" text="🙈" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji10"/>
+    <Button fx:id="emoji11" prefHeight="60" prefWidth="60" layoutX="800" layoutY="600" text="🙊" style="-fx-font-size: 24;" disable="true" onMouseClicked="#emoji11"/>
 </AnchorPane>

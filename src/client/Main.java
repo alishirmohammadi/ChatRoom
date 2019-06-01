@@ -34,7 +34,7 @@ public class Main extends Application {
 
     public void showChat() throws IOException {
         Parent root = FXMLLoader.load(Main.class.getResource("/views/chat.fxml"));
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 800, 660);
         stage.setScene(scene);
         stage.show();
     }
@@ -45,7 +45,7 @@ public class Main extends Application {
         dialog.setHeaderText("Welcome");
         dialog.setContentText("Please enter your name:");
         Optional<String> result = dialog.showAndWait();
-        return new User(result.orElse(""), 0);
+        return new User(result.orElse("").trim(), 0);
     }
 
     public File addProfile() {

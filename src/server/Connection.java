@@ -178,6 +178,7 @@ public class Connection extends Thread {
         addChats(chats);
     }
 
+
     public User getUser() {
         return user;
     }

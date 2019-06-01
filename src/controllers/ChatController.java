@@ -15,7 +15,7 @@ import models.message.TextMessage;
 import client.Main;
 import java.io.File;
 import java.io.IOException;
-import java.util.regex.Matcher;
+import java.util.Optional;
 
 public class ChatController {
     public static ChatController instance;
@@ -23,6 +23,19 @@ public class ChatController {
     public ListView chats;
     public ListView listView;
     public Button imageButton;
+    public Button emoji1;
+    public Button emoji2;
+    public Button emoji3;
+    public Button emoji4;
+    public Button emoji5;
+    public Button emoji6;
+    public Button emoji7;
+    public Button emoji8;
+    public Button emoji9;
+    public Button emoji10;
+    public Button emoji11;
+    public Label name;
+    public Button createGroup;
 
     { instance = this; }
 
@@ -42,6 +55,7 @@ public class ChatController {
 
 
     public void initialize() {
+        name.setText(Main.user.getName());
         messageInput.setDisable(true);
 
         updateChats();
@@ -140,6 +154,17 @@ public class ChatController {
     public void chatChange(MouseEvent mouseEvent) {
         messageInput.setDisable(chats.getSelectionModel().getSelectedItem() == null);
         imageButton.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji1.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji2.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji3.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji4.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji5.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji6.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji7.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji8.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji9.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji10.setDisable(chats.getSelectionModel().getSelectedItem() == null);
+        emoji11.setDisable(chats.getSelectionModel().getSelectedItem() == null);
         updateMessages();
     }
 
@@ -160,5 +185,35 @@ public class ChatController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void emoji1(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji1.getText()); }
+    public void emoji2(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji2.getText()); }
+    public void emoji3(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji3.getText()); }
+    public void emoji4(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji4.getText()); }
+    public void emoji5(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji5.getText()); }
+    public void emoji6(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji6.getText()); }
+    public void emoji7(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji7.getText()); }
+    public void emoji8(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji8.getText()); }
+    public void emoji9(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji9.getText()); }
+    public void emoji10(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji10.getText()); }
+    public void emoji11(MouseEvent mouseEvent) { messageInput.setText(messageInput.getText() + emoji11.getText()); }
+
+    public void createGroup(MouseEvent mouseEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Create group");
+        dialog.setHeaderText("Create group");
+        dialog.setContentText("Enter members name (split with ,):");
+        String members = dialog.showAndWait().orElse("").trim();
+        if(members.equals(""))
+            return;
+        TextInputDialog nameDialog = new TextInputDialog();
+        dialog.setTitle("Create group");
+        dialog.setHeaderText("Create group");
+        dialog.setContentText("Enter group name:");
+        String name = dialog.showAndWait().orElse("").trim();
+        if(name.equals(""))
+            return;
+        Main.connection.createGroup(name, members);
     }
 }
