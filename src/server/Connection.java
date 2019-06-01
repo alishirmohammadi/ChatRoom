@@ -5,6 +5,7 @@ import models.User;
 import models.chat.Chat;
 import models.chat.Group;
 import models.chat.PrivateChat;
+import models.message.ImageMessage;
 import models.message.Message;
 import models.message.TextMessage;
 
@@ -56,7 +57,7 @@ public class Connection extends Thread {
                         out.println("true");
                         out.flush();
                         if (chat instanceof PrivateChat) {
-                            User receiver = ((PrivateChat) chat).getUser();
+                            User receiver = getUser(((PrivateChat) chat).getUser());
                             Chat receiverChat = receiver.getChats().stream().filter(
                                     chat1 -> chat1 instanceof PrivateChat
                             ).filter(
@@ -82,6 +83,30 @@ public class Connection extends Thread {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else if (command.equals(Commands.SEND_IMAGE.toString())) {
+                    try {
+                        String chatJson = scanner.nextLine();
+                        Chat chat = yaGson.fromJson(chatJson, Chat.class);
+                        String fileName = receiveImage();
+                        if (chat instanceof PrivateChat) {
+                            Message message = new ImageMessage(this.user, chat.getId(), 0, fileName);
+                            chat.getMessages().add(0, message);
+                            sendMessage(message);
+                            Chat receiverChat = null;
+                            User receiver = getUser(((PrivateChat) chat).getUser());
+                            for (Chat chat1 : receiver.getChats()) {
+                                if (chat1 instanceof PrivateChat && ((PrivateChat) chat1).getUser().getName().equals(this.user.getName()))
+                                    receiverChat = chat1;
+                            }
+                            message.setChatId(receiverChat.getId());
+                            Connection receiverConnection = Server.connections.get(receiver);
+                            receiverConnection.sendMessage(message);
+                        } else if (chat instanceof Group) {
+                            // TODO: implement
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -96,6 +121,14 @@ public class Connection extends Thread {
             builder.append(ALPHA_NUMERIC_STRING.charAt(character));
         }
         return builder.toString();
+    }
+
+    public static User getUser(User u) {
+        for (User user : Server.connections.keySet())
+            if (user.equals(u))
+                return user;
+        return null;
+
     }
 
 

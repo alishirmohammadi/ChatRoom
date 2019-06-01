@@ -3,6 +3,7 @@ package client;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import controllers.ChatController;
+import javafx.application.Platform;
 import models.User;
 import models.chat.Chat;
 import models.chat.PrivateChat;
@@ -44,7 +45,7 @@ public class ServerConnection extends Thread {
                     List<PrivateChat> chats = yaGson.fromJson(chatsJson, chatsType);
                     Main.user.getChats().addAll(chats);
                     if(ChatController.instance != null)
-                        ChatController.instance.updateChats();
+                        Platform.runLater(() -> ChatController.instance.updateChats());
                 } else if(command.equals(Commands.RECEIVE_MESSAGE.toString())) {
                     String messageJson = scanner.nextLine();
                     Message message = yaGson.fromJson(messageJson, Message.class);
@@ -53,7 +54,10 @@ public class ServerConnection extends Thread {
                         if(chat.getId() == message.getChatId())
                             messageChat = chat;
                     messageChat.getMessages().add(0, message);
-                    ChatController.instance.showMessage(message, messageChat);
+                    Chat finalMessageChat = messageChat;
+                    Platform.runLater(() -> {
+                        ChatController.instance.showMessage(message, finalMessageChat);
+                    });
                 }
             }
         }
@@ -68,6 +72,17 @@ public class ServerConnection extends Thread {
     public void setProfile(File imageFile) throws IOException {
         out.println(Commands.SET_PROFILE);
         out.flush();
+        sendImage(imageFile);
+    }
+
+    public boolean sendMessage(Message message) {
+        out.println(Commands.SEND_MESSAGE);
+        out.println(message.toString());
+        out.flush();
+        return true;
+    }
+
+    public void sendImage(File imageFile) throws IOException {
         OutputStream outputStream = socket.getOutputStream();
         BufferedImage image = ImageIO.read(imageFile);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -78,10 +93,10 @@ public class ServerConnection extends Thread {
         outputStream.flush();
     }
 
-    public boolean sendMessage(Message message) {
-        out.println(Commands.SEND_MESSAGE);
-        out.println(message.toString());
+    public void sendImage(File image, Chat chat) throws IOException {
+        out.println(Commands.SEND_IMAGE);
+        out.println(chat.toString());
         out.flush();
-        return true;
+        sendImage(image);
     }
 }

@@ -1,5 +1,6 @@
 package models.chat;
 
+import com.gilecode.yagson.YaGson;
 import models.message.Message;
 
 import java.util.ArrayList;
@@ -36,5 +37,10 @@ public class Chat {
 
     public List<Message> getMessages() {
         return messages;
+    }
+
+    @Override
+    public String toString() {
+        return new YaGson().toJson(this);
     }
 }

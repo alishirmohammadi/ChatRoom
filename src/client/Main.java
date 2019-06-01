@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class Main extends Application {
-    private static Stage stage;
+    public static Stage stage;
     public static ServerConnection connection;
     public static User user = new User("Ali", 1);
 
@@ -52,7 +52,7 @@ public class Main extends Application {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select your profile image...");
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
+                new FileChooser.ExtensionFilter("Jpeg Image", "*.jpg")
         );
         return fileChooser.showOpenDialog(stage);
     }

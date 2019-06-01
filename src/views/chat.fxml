@@ -4,8 +4,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import javafx.scene.control.Button?>
 <AnchorPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChatController" stylesheets="@styles/style.css">
     <ListView fx:id="chats" editable="true" prefHeight="600" prefWidth="200" styleClass="chatList" onMouseClicked="#chatChange"/>
     <ListView fx:id="listView" editable="true" layoutX="200" prefHeight="540" prefWidth="600" styleClass="messages" />
-    <TextField fx:id="messageInput" layoutX="200.0" layoutY="540.0" prefWidth="600" prefHeight="60" promptText="Type message and press Enter to send." style="-fx-font-size: 20;" onAction="#sendMessage"/>
+    <TextField fx:id="messageInput" layoutX="260.0" layoutY="540.0" prefWidth="600" prefHeight="60" promptText="Type message and press Enter to send." style="-fx-font-size: 20;" onAction="#sendMessage"/>
+    <Button fx:id="imageButton" prefHeight="60" prefWidth="60" layoutX="200" layoutY="540" text="📎" style="-fx-font-size: 24;" onMouseClicked="#sendImage" disable="true"/>
 </AnchorPane>

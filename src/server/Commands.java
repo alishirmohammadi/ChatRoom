@@ -5,6 +5,7 @@ public enum Commands {
     SEND_MESSAGE("Send Message"),
     SET_PROFILE("Set Profile"),
     RECEIVE_MESSAGE("Receive Message"),
+    SEND_IMAGE("Send Image"),
     ADD_CHATS("Add Chats");
 
     String command;
