@@ -33,7 +33,7 @@ public class ChatController {
 
         Chat selectedChat = (Chat) chats.getSelectionModel().getSelectedItem();
         if(selectedChat == null) return;
-        listView.getItems().addAll(selectedChat.getMessages());
+        selectedChat.getMessages().forEach(message -> listView.getItems().add(message));
     }
 
 
@@ -72,7 +72,7 @@ public class ChatController {
                         if (messageLabel.getText().length() > 30) {
                             messageLabel.setMaxWidth(400);
                             messageLabel.setWrapText(true);
-                            messageLabel.setText(messageLabel.getText() + "                                                                          ");
+                            messageLabel.setText(messageLabel.getText() + "                                                                                                                                                                            ");
                         }
                         setGraphic(messageLabel);
                         if (message.getUser().equals(Main.user)) {

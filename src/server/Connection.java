@@ -6,8 +6,14 @@ import models.chat.Chat;
 import models.chat.Group;
 import models.chat.PrivateChat;
 import models.message.Message;
+import models.message.TextMessage;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Connection extends Thread {
@@ -29,26 +35,27 @@ public class Connection extends Thread {
         this.out = new PrintWriter(writer);
     }
 
-    @Override public void run() {
+    @Override
+    public void run() {
         while (true) {
-            if(scanner.hasNext()) {
+            if (scanner.hasNext()) {
                 String command = scanner.nextLine();
-                if(command.equals(Commands.CREATE_USER.toString())) {
+                if (command.equals(Commands.CREATE_USER.toString())) {
                     String userJson = scanner.nextLine();
                     user = yaGson.fromJson(userJson, User.class);
                     user.setId(Server.connections.size() + 1);
                     addDefaultChats();
                     Server.connections.put(user, this);
                     System.out.format("User '%s' connected.\n", user.getName());
-                } else if(command.equals(Commands.SEND_MESSAGE.toString())) {
+                } else if (command.equals(Commands.SEND_MESSAGE.toString())) {
                     String messageJson = scanner.nextLine();
                     Message message = yaGson.fromJson(messageJson, Message.class);
                     Chat chat = Server.chats.get(message.getChatId());
                     chat.getMessages().add(0, message);
-                    if(user.getChats().contains(chat)) {
+                    if (user.getChats().contains(chat)) {
                         out.println("true");
                         out.flush();
-                        if(chat instanceof PrivateChat) {
+                        if (chat instanceof PrivateChat) {
                             User receiver = ((PrivateChat) chat).getUser();
                             Chat receiverChat = receiver.getChats().stream().filter(
                                     chat1 -> chat1 instanceof PrivateChat
@@ -59,6 +66,8 @@ public class Connection extends Thread {
                             receiverChat.getMessages().add(0, message);
                             Connection receiverConnection = Server.connections.get(receiver);
                             receiverConnection.sendMessage(message);
+                            if (message instanceof TextMessage)
+                                System.out.format("User '%s' sent '%s' to user '%s'\n", this.user.getName(), ((TextMessage) message).getText(), receiver.getName());
                         } else if (chat instanceof Group) {
                             // TODO: implement
                         }
@@ -66,9 +75,46 @@ public class Connection extends Thread {
                         out.println("false");
                         out.flush();
                     }
+                } else if (command.equals(Commands.SET_PROFILE.toString())) {
+                    try {
+                        String fileName = receiveImage();
+                        System.out.println(fileName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+    }
+
+    private static final String ALPHA_NUMERIC_STRING = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    public static String randomFileName(int count) {
+        StringBuilder builder = new StringBuilder();
+        while (count-- != 0) {
+            int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
+            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+        }
+        return builder.toString();
+    }
+
+
+    public String receiveImage() throws IOException {
+        byte[] sizeAr = new byte[4];
+        InputStream inputStream = socket.getInputStream();
+        inputStream.read(sizeAr);
+        int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
+
+        byte[] imageAr = new byte[size];
+        inputStream.read(imageAr);
+
+        BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageAr));
+
+        System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
+
+        String fileName = randomFileName(20) + ".jpg";
+        ImageIO.write(image, "jpg", new File(fileName));
+        return fileName;
     }
 
     public void sendMessage(Message message) {

@@ -9,27 +9,26 @@ import models.chat.PrivateChat;
 import models.message.Message;
 import server.Commands;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 public class ServerConnection extends Thread {
     private static YaGson yaGson = new YaGson();
     private Socket socket;
-    private OutputStream outputStream;
-    private InputStream inputStream;
-    private Writer writer;
-    private Reader reader;
     private Scanner scanner;
     private PrintWriter out;
 
     public void connectServer() throws IOException {
         socket = new Socket("localhost", 8232);
-        outputStream = socket.getOutputStream();
-        inputStream = socket.getInputStream();
-        writer = new OutputStreamWriter(outputStream);
-        reader = new InputStreamReader(inputStream);
+        OutputStream outputStream = socket.getOutputStream();
+        InputStream inputStream = socket.getInputStream();
+        Writer writer = new OutputStreamWriter(outputStream);
+        Reader reader = new InputStreamReader(inputStream);
         out = new PrintWriter(writer);
         scanner = new Scanner(reader);
     }
@@ -64,6 +63,19 @@ public class ServerConnection extends Thread {
         out.println(Commands.CREATE_USER);
         out.println(user.toString());
         out.flush();
+    }
+
+    public void setProfile(File imageFile) throws IOException {
+        out.println(Commands.SET_PROFILE);
+        out.flush();
+        OutputStream outputStream = socket.getOutputStream();
+        BufferedImage image = ImageIO.read(imageFile);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", byteArrayOutputStream);
+        byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
+        outputStream.write(size);
+        outputStream.write(byteArrayOutputStream.toByteArray());
+        outputStream.flush();
     }
 
     public boolean sendMessage(Message message) {
